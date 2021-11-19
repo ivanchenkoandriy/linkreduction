@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  composer:
+    image: composer
+    working_dir: /app
+    user: "${UID}:${GID}"
+    volumes:
+      - ./:/app
+  php:
+    build:
+      network: host
+      context: .
+      dockerfile: docker/php.Dockerfile
+    working_dir: /app
+    user: "${UID}:${GID}"
+    command: sh -c "php yii serve 0.0.0.0 --port=8000"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+      - ./docker/php.ini-development:/usr/local/etc/php/php.ini
+  mysql:
+    hostname: mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
