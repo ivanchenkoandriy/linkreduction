@@ -2,7 +2,6 @@
 
 /* @var $this yii\web\View */
 
-use app\widgets\Alert;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Url;
 
